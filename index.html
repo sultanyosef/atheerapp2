@@ -1,0 +1,2539 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>𝕏 المنصة الرئيسية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #1d9bf0;
+            --accent-hover: #27a4f7;
+            --accent-soft: rgba(29, 155, 240, 0.14);
+        }
+
+        * { box-sizing: border-box; font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; }
+        body {
+            background: radial-gradient(circle at top, #11161d 0%, #000000 55%);
+            color: #e7e9ea;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-container { 
+            width: 100%; 
+            max-width: 650px; 
+            background: #05070a;
+            border-left: 1px solid #23282e; 
+            border-right: 1px solid #23282e; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.75);
+        }
+
+        /* الشريط العلوي */
+        .top-nav { 
+            position: sticky; 
+            top: 0; 
+            background: rgba(8, 10, 14, 0.88); 
+            backdrop-filter: blur(18px); 
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid #23282e; 
+            z-index: 100; 
+        }
+        .top-nav-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 16px 22px; 
+            border-bottom: 1px solid #1b2026; 
+        }
+        .top-nav-header h2 {
+            font-size: 21px;
+            font-weight: 850;
+            color: #ffffff;
+            letter-spacing: -0.4px;
+        }
+        
+        .profile-nav-btn {
+            background: #181c22;
+            color: #f0f3f6;
+            border: 1px solid #2e353e;
+            padding: 7px 16px;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 13.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .profile-nav-btn:hover {
+            background: #232932;
+            border-color: var(--accent);
+            color: #ffffff;
+        }
+
+        /* قائمة التبويب العلوية */
+        .nav-tabs {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(12, 15, 20, 0.7);
+            overflow-x: auto;
+            gap: 2px;
+            padding: 0 4px;
+        }
+        .tab-item { 
+            flex: 1; 
+            text-align: center; 
+            padding: 14px 8px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: #7c8590; 
+            cursor: pointer; 
+            border-bottom: 3px solid transparent; 
+            transition: all 0.2s ease; 
+            white-space: nowrap;
+            border-radius: 8px 8px 0 0;
+        }
+        .tab-item:hover {
+            color: #e7e9ea;
+            background: var(--accent-soft);
+        }
+        .tab-item.active {
+            color: #ffffff;
+            border-bottom-color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        /* محتوى الأقسام */
+        .content-section { display: none; flex: 1; }
+        .content-section.active { display: block; animation: fadeIn 0.25s ease-in-out; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* شريط البحث */
+        .search-bar-box {
+            padding: 12px 22px;
+            border-bottom: 1px solid #1d2228;
+            background: rgba(12, 15, 20, 0.6);
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            background: #080b0f;
+            border: 1px solid #252c36;
+            border-radius: 9999px;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-input:focus { border-color: var(--accent); }
+
+        /* صندوق إنشاء منشور */
+        .post-box {
+            padding: 18px 22px;
+            border-bottom: 1px solid #23282e;
+            display: flex;
+            gap: 15px;
+            background: linear-gradient(180deg, rgba(20, 25, 33, 0.75) 0%, rgba(10, 13, 18, 0.55) 100%);
+        }
+        .post-input-wrapper { flex: 1; display: flex; flex-direction: column; }
+        textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+            min-height: 85px;
+            padding-top: 6px;
+            line-height: 1.55;
+        }
+        textarea::placeholder { color: #6e7681; }
+        .post-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-top: 10px;
+            border-top: 1px solid rgba(45, 52, 62, 0.65);
+            padding-top: 12px;
+        }
+        .tweet-btn {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            padding: 9px 22px;
+            border-radius: 9999px;
+            font-weight: 750;
+            font-size: 14.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px var(--accent-soft);
+        }
+        .tweet-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        /* البطاقات والمنشورات */
+        .card-item {
+            padding: 18px 22px;
+            border-bottom: 1px solid #1d2228;
+            display: flex;
+            gap: 15px;
+            transition: background 0.18s ease, transform 0.18s ease;
+            position: relative;
+        }
+        .card-item:hover {
+            background: rgba(255, 255, 255, 0.025);
+        }
+        
+        .avatar-img-container {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--accent);
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            color: #ffffff;
+            font-size: 18px;
+            border: 1.5px solid #2b323b;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+        }
+        .avatar-img-container img { width: 100%; height: 100%; object-fit: cover; }
+
+        .card-body { flex: 1; }
+        .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; gap: 8px; }
+        .author-info-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .author-name { font-weight: 750; color: #ffffff; font-size: 15.5px; }
+        .author-handle { color: #7c8590; font-size: 13.5px; }
+        .edited-tag { color: #8c96a2; font-size: 11.5px; background: #141920; padding: 2px 8px; border-radius: 9999px; border: 1px solid #252c36; }
+        .card-text { font-size: 15.5px; line-height: 1.65; color: #e2e6ea; word-break: break-word; }
+
+        .hashtag-chip {
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .hashtag-chip:hover { text-decoration: underline; }
+
+        .card-header-actions { display: flex; align-items: center; gap: 6px; }
+        .follow-mini-btn {
+            background: #141920;
+            color: #e2e6ea;
+            border: 1px solid #2a313b;
+            padding: 4px 11px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+        .follow-mini-btn:hover { border-color: var(--accent); color: #ffffff; }
+        .follow-mini-btn.following {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .card-actions-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(35, 40, 46, 0.6);
+        }
+        .action-chip-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #23282e;
+            color: #9ba4b0;
+            font-size: 12.5px;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+        .action-chip-btn:hover { background: var(--accent-soft); color: #ffffff; border-color: var(--accent); }
+        .action-chip-btn.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+
+        .log-actions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 22px;
+            border-bottom: 1px solid #1d2228;
+            background: rgba(14, 18, 24, 0.65);
+        }
+        .log-download-link {
+            display: inline-block;
+            margin-top: 10px;
+            background: #121820;
+            color: var(--accent);
+            border: 1px solid #263140;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 12.5px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .log-download-link:hover { background: #1a2330; color: #ffffff; }
+        
+        /* زر الحذف الأنيق */
+        .delete-item-btn {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid transparent;
+            color: #7c8590;
+            cursor: pointer;
+            font-size: 15px;
+            padding: 5px 8px;
+            border-radius: 9999px;
+            transition: all 0.2s ease;
+        }
+        .delete-item-btn:hover {
+            color: #ff4d5a;
+            background: rgba(244, 33, 46, 0.14);
+            border-color: rgba(244, 33, 46, 0.3);
+        }
+
+        .media-placeholder {
+            width: 100%;
+            height: 190px;
+            background: linear-gradient(145deg, #12161c 0%, #0b0e12 100%);
+            border-radius: 16px;
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #939ea8;
+            font-weight: 700;
+            border: 1px solid #252b33;
+        }
+        .recorded-video-player {
+            width: 100%;
+            max-height: 250px;
+            background: #000000;
+            border-radius: 16px;
+            margin-top: 10px;
+            border: 1px solid #2a313a;
+            outline: none;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-panel {
+            padding: 18px 22px;
+            border-bottom: 1px solid #23282e;
+            background: rgba(18, 22, 28, 0.55);
+        }
+        .custom-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: #080b0f;
+            border: 1px solid #282f38;
+            border-radius: 12px;
+            color: #ffffff;
+            margin-bottom: 12px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .custom-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        /* قسم الملف الشخصي وتعديله */
+        .profile-view { padding: 25px 20px; }
+        .profile-header-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #23282e;
+            padding-bottom: 20px;
+        }
+        .profile-user-info-wrapper { display: flex; align-items: center; gap: 15px; }
+        
+        .profile-big-avatar {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--accent);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            font-weight: 800;
+            color: #ffffff;
+            border: 2px solid #2e3640;
+            flex-shrink: 0;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+        }
+        .profile-big-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .profile-info h3 { font-size: 19px; color: #ffffff; font-weight: 800; }
+        .profile-info p { color: #7c8590; font-size: 13.5px; margin-top: 2px; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 16px 0;
+        }
+        .stat-box {
+            background: rgba(18, 22, 29, 0.75);
+            border: 1px solid #23282e;
+            border-radius: 14px;
+            padding: 11px 8px;
+            text-align: center;
+        }
+        .stat-num { font-size: 17px; font-weight: 850; color: #ffffff; }
+        .stat-label { font-size: 11.5px; color: #8c96a2; margin-top: 2px; }
+        
+        .exit-profile-btn {
+            background: #181c22;
+            color: #ffffff;
+            border: 1px solid #2e353e;
+            padding: 8px 18px;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .exit-profile-btn:hover { background: #232932; border-color: #3d4652; }
+
+        .profile-bio { font-size: 15px; color: #e2e6ea; margin: 15px 0; line-height: 1.55; }
+        .profile-link { color: var(--accent); text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block; margin-bottom: 15px; }
+        .profile-link:hover { text-decoration: underline; }
+
+        .accent-picker-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 14px;
+            padding: 10px 14px;
+            background: rgba(12, 15, 20, 0.7);
+            border: 1px solid #222831;
+            border-radius: 12px;
+        }
+        .accent-swatch {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            cursor: pointer;
+        }
+
+        .edit-profile-box {
+            background: linear-gradient(180deg, rgba(20, 25, 33, 0.72) 0%, rgba(12, 15, 20, 0.85) 100%);
+            border: 1px solid #23282e;
+            padding: 20px;
+            border-radius: 18px;
+            margin-top: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+        .edit-profile-box h4 { font-size: 16px; color: #ffffff; margin-bottom: 12px; font-weight: 700; }
+
+        .avatar-preview-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            background: rgba(10, 13, 18, 0.7);
+            border: 1px solid #222831;
+            border-radius: 12px;
+        }
+        .avatar-preview-thumb {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #303844;
+            display: none;
+        }
+        .avatar-preview-text { font-size: 12.5px; color: #8f99a4; }
+
+        .backup-actions-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .account-actions-stack { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+        .profile-logout-btn {
+            width: 100%;
+            background: #181c22;
+            color: #ffffff;
+            border: 1px solid #303741;
+            padding: 10px 18px;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .profile-logout-btn:hover { background: #232932; }
+        .delete-account-btn {
+            width: 100%;
+            background: rgba(244, 33, 46, 0.12);
+            color: #ff4d5a;
+            border: 1px solid rgba(244, 33, 46, 0.38);
+            padding: 10px 18px;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .delete-account-btn:hover { background: #f4212e; color: #ffffff; }
+
+        .file-upload-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; margin-bottom: 12px; }
+        .file-upload-btn {
+            display: block;
+            width: 100%;
+            padding: 12px 16px;
+            background: #0c1015;
+            border: 1px dashed #323a46;
+            border-radius: 12px;
+            color: #8f99a4;
+            text-align: center;
+            font-size: 14.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .file-upload-btn:hover {
+            background: #131820;
+            color: #ffffff;
+            border-color: var(--accent);
+        }
+        .file-upload-wrapper input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+
+        /* استوديو البث المباشر */
+        .live-studio-box { padding: 25px 20px; text-align: center; }
+        .live-user-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(16, 20, 27, 0.75);
+            border: 1px solid #23282e;
+            border-radius: 12px;
+            padding: 9px 14px;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+        .live-meta-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .live-timer-pill {
+            background: #141920;
+            border: 1px solid #29313c;
+            color: #e7e9ea;
+            padding: 7px 14px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+        .live-timer-pill.recording {
+            color: #ff4d5a;
+            border-color: rgba(244, 33, 46, 0.45);
+        }
+        .inline-camera-bar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 16px; }
+        .inline-cam-btn {
+            background: #12161c;
+            color: #d7dde3;
+            border: 1px solid #262d37;
+            padding: 9px 16px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .inline-cam-btn:hover { background: #1a2028; border-color: #36404e; }
+        .inline-cam-btn.active {
+            background: var(--accent);
+            color: #ffffff;
+            border-color: var(--accent);
+            box-shadow: 0 3px 12px var(--accent-soft);
+        }
+
+        .live-preview-container {
+            width: 100%;
+            height: 300px;
+            background: #0c0f14;
+            border-radius: 18px;
+            border: 1px solid #262d37;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+        }
+        #liveVideoElement { width: 100%; height: 100%; object-fit: cover; background: #000000; display: block; }
+        .live-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(244, 33, 46, 0.92);
+            color: #ffffff;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 800;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(244, 33, 46, 0.4);
+        }
+        .gift-toast-banner {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(12, 16, 23, 0.92);
+            border: 1px solid rgba(255, 215, 0, 0.55);
+            color: #ffe066;
+            padding: 7px 18px;
+            border-radius: 9999px;
+            font-size: 13.5px;
+            font-weight: 800;
+            display: none;
+            white-space: nowrap;
+            z-index: 5;
+        }
+
+        .live-actions-group { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 18px; }
+        .start-live-btn {
+            background: linear-gradient(135deg, #f4212e 0%, #c81420 100%);
+            color: #ffffff;
+            border: none;
+            padding: 13px 26px;
+            border-radius: 9999px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 18px rgba(244, 33, 46, 0.34);
+        }
+        .start-live-btn:hover {
+            background: linear-gradient(135deg, #ff3240 0%, #dc1d29 100%);
+            transform: translateY(-1px);
+        }
+        .stop-live-btn {
+            background: #1b2028;
+            color: #ffffff;
+            border: 1px solid #303844;
+            padding: 13px 26px;
+            border-radius: 9999px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .stop-live-btn:hover {
+            background: #252c37;
+            border-color: #424d5c;
+        }
+
+        /* قسم الهدايا المستقل تحت البث */
+        .gifts-standalone-section {
+            background: linear-gradient(180deg, rgba(20, 25, 34, 0.85) 0%, rgba(11, 14, 20, 0.95) 100%);
+            border: 1px solid #262e39;
+            border-radius: 18px;
+            padding: 16px;
+            text-align: right;
+            margin-top: 8px;
+        }
+        .gifts-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #202731;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .gifts-section-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+        .coins-balance-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .coins-pill {
+            background: rgba(255, 212, 59, 0.14);
+            border: 1px solid rgba(255, 212, 59, 0.4);
+            color: #ffe066;
+            padding: 5px 12px;
+            border-radius: 9999px;
+            font-size: 12.5px;
+            font-weight: 800;
+        }
+        .topup-open-btn {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .gifts-buttons-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .gift-send-btn {
+            background: #12171e;
+            color: #ffffff;
+            border: 1px solid #2a323d;
+            padding: 10px 12px;
+            border-radius: 14px;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.18s ease;
+        }
+        .gift-send-btn:hover {
+            border-color: #ffd43b;
+            background: rgba(255, 212, 59, 0.1);
+        }
+        .gift-cost-tag {
+            color: #ffe066;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .no-coins-alert-box {
+            display: none;
+            margin-top: 12px;
+            padding: 12px 14px;
+            background: rgba(244, 33, 46, 0.14);
+            border: 1px solid rgba(244, 33, 46, 0.45);
+            border-radius: 12px;
+            color: #ff6b76;
+            font-size: 13.5px;
+            font-weight: 800;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        /* لوحة شحن العملات */
+        .topup-panel {
+            display: none;
+            margin-top: 14px;
+            padding: 14px;
+            background: #0b0e14;
+            border: 1px solid #28313e;
+            border-radius: 14px;
+        }
+        .topup-panel h5 {
+            font-size: 14px;
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .pkg-btn {
+            background: #141922;
+            color: #e7e9ea;
+            border: 1px solid #2a3340;
+            border-radius: 10px;
+            padding: 8px 6px;
+            font-size: 12.5px;
+            font-weight: 800;
+            cursor: pointer;
+            text-align: center;
+        }
+        .pkg-btn.active {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+            color: #ffffff;
+        }
+        .payment-methods-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .pay-method-btn {
+            background: #141922;
+            color: #e7e9ea;
+            border: 1px solid #2a3340;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .pay-method-btn.active {
+            border-color: #00ba7c;
+            background: rgba(0, 186, 124, 0.15);
+            color: #ffffff;
+        }
+        .confirm-topup-btn {
+            width: 100%;
+            background: #00ba7c;
+            color: #ffffff;
+            border: none;
+            padding: 10px;
+            border-radius: 9999px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .topup-status-msg {
+            margin-top: 8px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #9ba4b0;
+            display: none;
+        }
+
+        .success-alert { color: #00ba7c; font-size: 13px; margin-top: 8px; display: none; }
+    </style>
+
+    <script>
+        // غيّر هذا الرابط إلى رابط خادم Node.js الخاص بك بعد رفعه
+        const PAYMENT_API_BASE = 'http://localhost:3000';
+
+        let temporaryUploadedAvatar = '';
+        let temporaryUploadedVideoFile = null;
+        let currentStream = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let isLiveStarted = false;
+        let isMicMuted = false;
+        let selectedCameraType = 'front';
+        let streamStartedAt = null;
+        let isStoppingLive = false;
+        let canvasCaptureTimer = null;
+        let liveTimerInterval = null;
+        let giftBannerTimeout = null;
+        let currentSessionGiftsCount = 0;
+        let currentSessionGiftsSummary = {};
+        let selectedTopupCoins = 100;
+        let selectedPaymentMethod = 'visa';
+        let activeBlobUrls = [];
+
+        const CAMERA_CHOICES = [
+            { id: 'front', label: 'كاميرا أمامية', facingMode: 'user' },
+            { id: 'back', label: 'كاميرا خلفية', facingMode: 'environment' },
+            { id: 'external', label: 'كاميرا خارجية', facingMode: null }
+        ];
+
+        const LIVE_GIFTS = [
+            { id: 'rose', label: '🌹 وردة', cost: 10 },
+            { id: 'heart', label: '💛 قلب', cost: 25 },
+            { id: 'gem', label: '💎 جوهرة', cost: 50 },
+            { id: 'crown', label: '👑 تاج', cost: 100 }
+        ];
+
+        const COIN_PACKAGES = [
+            { coins: 100, price: '5 ر.س' },
+            { coins: 300, price: '15 ر.س' },
+            { coins: 700, price: '30 ر.س' }
+        ];
+
+        const ACCENT_COLORS = ['#1d9bf0', '#00ba7c', '#9b5de5', '#f59e0b'];
+
+        function getActiveUserIdentity() {
+            const currentUser = window.localStorage.getItem('active_session_user') || 'User';
+            const currentUid = window.localStorage.getItem('active_session_uid') || 'guest';
+            const displayName = (window.localStorage.getItem('x_profile_name_' + currentUid) || currentUser).trim();
+            const rawHandle = (window.localStorage.getItem('x_username_' + currentUid) || displayName.toLowerCase().replace(/\s+/g, '_')).replace(/^@+/, '');
+            return {
+                uid: currentUid,
+                displayName: displayName || 'User',
+                handle: '@' + (rawHandle || 'user')
+            };
+        }
+
+        function getUserCoins() {
+            const id = getActiveUserIdentity();
+            return Number(window.localStorage.getItem('x_user_coins_' + id.uid) || 0);
+        }
+
+        function setUserCoins(amount) {
+            const id = getActiveUserIdentity();
+            const safeAmount = Math.max(0, Number(amount || 0));
+            window.localStorage.setItem('x_user_coins_' + id.uid, String(safeAmount));
+            updateCoinsDisplay();
+        }
+
+        function updateCoinsDisplay() {
+            const coins = getUserCoins();
+            const badge = document.getElementById('userCoinsBalanceBadge');
+            if (badge) badge.innerText = '🪙 العملات: ' + coins;
+        }
+
+        function refreshLiveUserBanner() {
+            const id = getActiveUserIdentity();
+            const el = document.getElementById('liveActiveUserLabel');
+            if (el) {
+                el.innerText = id.displayName + ' (' + id.handle + ')';
+            }
+            updateCoinsDisplay();
+        }
+
+        function openLogsDB() {
+            return new Promise((resolve) => {
+                if (!window.indexedDB) {
+                    resolve(null);
+                    return;
+                }
+                try {
+                    const req = window.indexedDB.open('atheer_stream_logs_db', 1);
+                    req.onupgradeneeded = function(e) {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains('recordings')) {
+                            db.createObjectStore('recordings', { keyPath: 'id' });
+                        }
+                    };
+                    req.onsuccess = function(e) { resolve(e.target.result); };
+                    req.onerror = function() { resolve(null); };
+                } catch (err) {
+                    resolve(null);
+                }
+            });
+        }
+
+        async function putRecordingBlob(id, blob) {
+            if (!blob || blob.size === 0) return false;
+            const db = await openLogsDB();
+            if (!db) return false;
+            return new Promise((resolve) => {
+                try {
+                    const tx = db.transaction('recordings', 'readwrite');
+                    tx.objectStore('recordings').put({ id: id, blob: blob });
+                    tx.oncomplete = () => resolve(true);
+                    tx.onerror = () => resolve(false);
+                } catch (e) {
+                    resolve(false);
+                }
+            });
+        }
+
+        async function getRecordingBlob(id) {
+            const db = await openLogsDB();
+            if (!db) return null;
+            return new Promise((resolve) => {
+                try {
+                    const tx = db.transaction('recordings', 'readonly');
+                    const req = tx.objectStore('recordings').get(id);
+                    req.onsuccess = () => resolve(req.result ? req.result.blob : null);
+                    req.onerror = () => resolve(null);
+                } catch (e) {
+                    resolve(null);
+                }
+            });
+        }
+
+        async function deleteRecordingBlob(id) {
+            const db = await openLogsDB();
+            if (!db) return;
+            try {
+                const tx = db.transaction('recordings', 'readwrite');
+                tx.objectStore('recordings').delete(id);
+            } catch (e) {}
+        }
+
+        function applySavedAccent() {
+            const saved = window.localStorage.getItem('x_accent_color') || '#1d9bf0';
+            document.documentElement.style.setProperty('--accent', saved);
+        }
+
+        window.setAccentColor = function(hex) {
+            window.localStorage.setItem('x_accent_color', hex);
+            applySavedAccent();
+        };
+
+        function getFollowedAuthors() {
+            return JSON.parse(window.localStorage.getItem('x_followed_authors') || '[]');
+        }
+
+        window.toggleFollowAuthor = function(authorName) {
+            const name = (authorName || '').trim();
+            if (!name) return;
+            let list = getFollowedAuthors();
+            const exists = list.includes(name);
+            if (exists) {
+                list = list.filter(item => item !== name);
+            } else {
+                list.push(name);
+            }
+            window.localStorage.setItem('x_followed_authors', JSON.stringify(list));
+            updateProfileStats();
+            if (window.loadPosts) window.loadPosts();
+            if (window.loadArticles) window.loadArticles();
+            if (window.loadVideos) window.loadVideos();
+        };
+
+        function formatTextWithHashtags(rawText) {
+            const safe = String(rawText || '').replace(/[&<>"']/g, (ch) => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[ch]));
+            return safe.replace(/(^|\s)(#[\u0600-\u06FF\w-]+)/g, (match, space, tag) => {
+                const encoded = encodeURIComponent(tag);
+                return `${space}<span class="hashtag-chip" onclick="filterByHashtag(decodeURIComponent('${encoded}'))">${tag}</span>`;
+            });
+        }
+
+        window.filterByHashtag = function(tag) {
+            const searchInput = document.getElementById('postsSearchInput');
+            if (searchInput) {
+                searchInput.value = tag;
+                window.loadPosts();
+            }
+        };
+
+        function formatElapsed(totalSeconds) {
+            const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+            const secs = String(totalSeconds % 60).padStart(2, '0');
+            return mins + ':' + secs;
+        }
+
+        function startLiveTimer() {
+            stopLiveTimer();
+            const timerEl = document.getElementById('liveTimerDisplay');
+            if (timerEl) {
+                timerEl.innerText = '⏱ 00:00';
+                timerEl.classList.add('recording');
+            }
+            liveTimerInterval = setInterval(() => {
+                if (!streamStartedAt || !timerEl) return;
+                const sec = Math.max(0, Math.floor((Date.now() - streamStartedAt) / 1000));
+                timerEl.innerText = '⏱ ' + formatElapsed(sec);
+            }, 500);
+        }
+
+        function stopLiveTimer() {
+            if (liveTimerInterval) {
+                clearInterval(liveTimerInterval);
+                liveTimerInterval = null;
+            }
+            const timerEl = document.getElementById('liveTimerDisplay');
+            if (timerEl) {
+                timerEl.innerText = '⏱ 00:00';
+                timerEl.classList.remove('recording');
+            }
+        }
+
+        function stopCanvasFallback() {
+            if (canvasCaptureTimer) {
+                clearInterval(canvasCaptureTimer);
+                canvasCaptureTimer = null;
+            }
+        }
+
+        function stopMediaStream() {
+            stopLiveTimer();
+            stopCanvasFallback();
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => {
+                    try { track.stop(); } catch (e) {}
+                });
+                currentStream = null;
+            }
+            const videoElement = document.getElementById('liveVideoElement');
+            if (videoElement) {
+                try { videoElement.pause(); } catch (e) {}
+                videoElement.srcObject = null;
+                videoElement.removeAttribute('src');
+                videoElement.load();
+            }
+        }
+
+        function resetGiftSession() {
+            currentSessionGiftsCount = 0;
+            currentSessionGiftsSummary = {};
+            const counterEl = document.getElementById('liveGiftsCounter');
+            if (counterEl) counterEl.innerText = '🎁 0';
+            const toast = document.getElementById('giftToastBanner');
+            if (toast) {
+                toast.innerText = '';
+                toast.style.display = 'none';
+            }
+            const noCoinsBox = document.getElementById('noCoinsAlertBox');
+            if (noCoinsBox) noCoinsBox.style.display = 'none';
+        }
+
+        function showTopupStatus(text, isError) {
+            const msgEl = document.getElementById('topupStatusMsg');
+            if (!msgEl) return;
+            msgEl.innerText = text;
+            msgEl.style.color = isError ? '#ff6b76' : '#00ba7c';
+            msgEl.style.display = 'block';
+        }
+
+        window.openTopupPanel = function() {
+            const panel = document.getElementById('topupPanel');
+            if (panel) panel.style.display = 'block';
+        };
+
+        window.selectCoinPackage = function(coins, btnEl) {
+            selectedTopupCoins = coins;
+            document.querySelectorAll('.pkg-btn').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+        };
+
+        window.selectPaymentMethod = function(method, btnEl) {
+            selectedPaymentMethod = method;
+            document.querySelectorAll('.pay-method-btn').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+
+            const mobileInput = document.getElementById('mobilePayInput');
+            const visaNote = document.getElementById('visaPayNote');
+            if (mobileInput) mobileInput.style.display = method === 'mobile' ? 'block' : 'none';
+            if (visaNote) visaNote.style.display = method === 'visa' ? 'block' : 'none';
+        };
+
+        window.confirmCoinsTopup = async function() {
+            if (selectedPaymentMethod === 'mobile') {
+                const phone = (document.getElementById('mobilePayInput')?.value || '').trim();
+                if (!phone) {
+                    showTopupStatus('أدخل رقم الجوال أولاً', true);
+                    return;
+                }
+                showTopupStatus('فوترة رصيد الجوال تتطلب تفعيل مزود الفوترة عبر الخادم', true);
+                return;
+            }
+
+            try {
+                const id = getActiveUserIdentity();
+                showTopupStatus('جاري إنشاء فاتورة الدفع عبر فيزا...', false);
+
+                const res = await fetch(`${PAYMENT_API_BASE}/api/topup/visa/create`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        coins: selectedTopupCoins,
+                        uid: id.uid
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.checkoutUrl) {
+                    window.localStorage.setItem('x_pending_topup_coins', String(selectedTopupCoins));
+                    window.location.href = data.checkoutUrl;
+                } else {
+                    showTopupStatus(data.error || 'تعذر بدء الدفع عبر فيزا', true);
+                }
+            } catch (err) {
+                showTopupStatus('تعذر الاتصال بخادم الدفع. تأكد من تشغيل server.js', true);
+            }
+        };
+
+        async function checkReturnedVisaInvoice() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const invoiceId = params.get('id');
+                if (!invoiceId) return;
+
+                const pendingCoins = Number(window.localStorage.getItem('x_pending_topup_coins') || 0);
+                const queryUrl = `${PAYMENT_API_BASE}/api/topup/visa/verify?id=${encodeURIComponent(invoiceId)}${pendingCoins ? '&coins=' + pendingCoins : ''}`;
+
+                const res = await fetch(queryUrl);
+                const result = await res.json();
+
+                if (result && result.paid && Number(result.coins) > 0) {
+                    setUserCoins(getUserCoins() + Number(result.coins));
+                    window.localStorage.removeItem('x_pending_topup_coins');
+
+                    const noCoinsBox = document.getElementById('noCoinsAlertBox');
+                    if (noCoinsBox) noCoinsBox.style.display = 'none';
+
+                    const panel = document.getElementById('topupPanel');
+                    if (panel) panel.style.display = 'block';
+
+                    showTopupStatus(`تم تأكيد الدفع وإضافة ${Number(result.coins)} عملة بنجاح`, false);
+                }
+            } catch (err) {}
+        }
+
+        window.sendLiveGift = function(giftId) {
+            const gift = LIVE_GIFTS.find(g => g.id === giftId);
+            if (!gift) return;
+
+            const currentCoins = getUserCoins();
+            const noCoinsBox = document.getElementById('noCoinsAlertBox');
+
+            if (currentCoins < gift.cost) {
+                if (noCoinsBox) noCoinsBox.style.display = 'flex';
+                window.openTopupPanel();
+                return;
+            }
+
+            if (noCoinsBox) noCoinsBox.style.display = 'none';
+            setUserCoins(currentCoins - gift.cost);
+
+            const id = getActiveUserIdentity();
+            currentSessionGiftsCount += 1;
+            currentSessionGiftsSummary[gift.label] = (currentSessionGiftsSummary[gift.label] || 0) + 1;
+
+            const counterEl = document.getElementById('liveGiftsCounter');
+            if (counterEl) counterEl.innerText = '🎁 ' + currentSessionGiftsCount;
+
+            const toast = document.getElementById('giftToastBanner');
+            if (toast) {
+                toast.innerText = id.handle + ' · ' + gift.label;
+                toast.style.display = 'block';
+                clearTimeout(giftBannerTimeout);
+                giftBannerTimeout = setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 2600);
+            }
+        };
+
+        window.toggleMicMute = function() {
+            isMicMuted = !isMicMuted;
+            if (currentStream) {
+                currentStream.getAudioTracks().forEach(track => {
+                    track.enabled = !isMicMuted;
+                });
+            }
+            const btn = document.getElementById('muteMicBtn');
+            if (btn) {
+                btn.innerText = isMicMuted ? '🔇 الميكروفون مكتوم' : '🎤 الميكروفون مفعل';
+                btn.classList.toggle('active', isMicMuted);
+            }
+        };
+
+        window.logoutUser = function() {
+            isLiveStarted = false;
+            streamStartedAt = null;
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                try { mediaRecorder.stop(); } catch (e) {}
+            }
+            stopMediaStream();
+            window.localStorage.removeItem('active_session_user');
+            window.localStorage.removeItem('active_session_uid');
+            window.location.href = 'login.html';
+        };
+
+        window.deleteAccount = function() {
+            isLiveStarted = false;
+            streamStartedAt = null;
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                try { mediaRecorder.stop(); } catch (e) {}
+            }
+            stopMediaStream();
+            const currentUid = window.localStorage.getItem('active_session_uid') || 'guest';
+
+            window.localStorage.removeItem('x_profile_name_' + currentUid);
+            window.localStorage.removeItem('x_profile_bio_' + currentUid);
+            window.localStorage.removeItem('x_profile_link_' + currentUid);
+            window.localStorage.removeItem('x_profile_avatar_' + currentUid);
+            window.localStorage.removeItem('x_username_' + currentUid);
+            window.localStorage.removeItem('active_session_user');
+            window.localStorage.removeItem('active_session_uid');
+
+            window.location.href = 'login.html';
+        };
+
+        window.switchTab = function(sectionName, titleText) {
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
+
+            const targetSec = document.getElementById(sectionName + 'Section');
+            if (targetSec) targetSec.classList.add('active');
+            
+            const titleEl = document.getElementById('sectionTitle');
+            if (titleEl) titleEl.innerText = titleText;
+            
+            const tabs = document.querySelectorAll('.tab-item');
+            tabs.forEach(tab => {
+                if(tab.innerText.includes(titleText)) tab.classList.add('active');
+            });
+
+            if (sectionName === 'live') {
+                isLiveStarted = false;
+                streamStartedAt = null;
+                isStoppingLive = false;
+                resetGiftSession();
+                refreshLiveUserBanner();
+                const badge = document.getElementById('liveBadgeIndicator');
+                if (badge) badge.style.display = 'none';
+                renderThreeCameraOptions();
+                renderGiftButtons();
+                startStandbyPreview();
+            } else {
+                if (!isStoppingLive) {
+                    isLiveStarted = false;
+                    streamStartedAt = null;
+                    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                        try { mediaRecorder.stop(); } catch (e) {}
+                    }
+                    stopMediaStream();
+                }
+            }
+
+            if (sectionName === 'posts' && window.loadPosts) window.loadPosts();
+            if (sectionName === 'articles' && window.loadArticles) window.loadArticles();
+            if (sectionName === 'videos' && window.loadVideos) window.loadVideos();
+            if (sectionName === 'streamLogs' && window.loadStreamLogs) window.loadStreamLogs();
+            if (sectionName === 'profile' && window.loadUserProfileData) window.loadUserProfileData();
+        };
+
+        window.deletePost = function(index) {
+            let posts = JSON.parse(window.localStorage.getItem('x_app_posts') || '[]');
+            posts.splice(index, 1);
+            window.localStorage.setItem('x_app_posts', JSON.stringify(posts));
+            window.loadPosts();
+        };
+
+        window.editPostItem = function(index) {
+            let posts = JSON.parse(window.localStorage.getItem('x_app_posts') || '[]');
+            if (!posts[index]) return;
+            const updated = window.prompt('تعديل المنشور:', posts[index].text || '');
+            if (updated === null) return;
+            const trimmed = updated.trim();
+            if (!trimmed) return;
+            posts[index].text = trimmed;
+            posts[index].edited = true;
+            window.localStorage.setItem('x_app_posts', JSON.stringify(posts));
+            window.loadPosts();
+        };
+
+        window.togglePostReaction = function(index, field) {
+            let posts = JSON.parse(window.localStorage.getItem('x_app_posts') || '[]');
+            if (!posts[index]) return;
+            const currentCount = Number(posts[index][field] || 0);
+            const activeField = field === 'likes' ? 'likedByMe' : 'savedByMe';
+            const wasActive = Boolean(posts[index][activeField]);
+            posts[index][activeField] = !wasActive;
+            posts[index][field] = wasActive ? Math.max(0, currentCount - 1) : currentCount + 1;
+            window.localStorage.setItem('x_app_posts', JSON.stringify(posts));
+            window.loadPosts();
+        };
+
+        window.copyTextToClipboard = function(text) {
+            if (!text) return;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).catch(() => {});
+            }
+        };
+
+        window.deleteArticle = function(index) {
+            let articles = JSON.parse(window.localStorage.getItem('x_app_articles') || '[]');
+            articles.splice(index, 1);
+            window.localStorage.setItem('x_app_articles', JSON.stringify(articles));
+            window.loadArticles();
+        };
+
+        window.editArticleItem = function(index) {
+            let articles = JSON.parse(window.localStorage.getItem('x_app_articles') || '[]');
+            if (!articles[index]) return;
+            const newTitle = window.prompt('تعديل عنوان المقال:', articles[index].title || '');
+            if (newTitle === null) return;
+            const newContent = window.prompt('تعديل محتوى المقال:', articles[index].content || '');
+            if (newContent === null) return;
+            if (!newTitle.trim() || !newContent.trim()) return;
+            articles[index].title = newTitle.trim();
+            articles[index].content = newContent.trim();
+            articles[index].edited = true;
+            window.localStorage.setItem('x_app_articles', JSON.stringify(articles));
+            window.loadArticles();
+        };
+
+        window.toggleArticleLike = function(index) {
+            let articles = JSON.parse(window.localStorage.getItem('x_app_articles') || '[]');
+            if (!articles[index]) return;
+            const currentCount = Number(articles[index].likes || 0);
+            const wasActive = Boolean(articles[index].likedByMe);
+            articles[index].likedByMe = !wasActive;
+            articles[index].likes = wasActive ? Math.max(0, currentCount - 1) : currentCount + 1;
+            window.localStorage.setItem('x_app_articles', JSON.stringify(articles));
+            window.loadArticles();
+        };
+
+        window.deleteVideo = async function(index) {
+            let videos = JSON.parse(window.localStorage.getItem('x_app_videos') || '[]');
+            const target = videos[index];
+            if (target && target.videoRecordId) {
+                await deleteRecordingBlob(target.videoRecordId);
+            }
+            videos.splice(index, 1);
+            window.localStorage.setItem('x_app_videos', JSON.stringify(videos));
+            window.loadVideos();
+        };
+
+        window.deleteStreamLog = async function(index) {
+            let logs = JSON.parse(window.localStorage.getItem('x_stream_logs') || '[]');
+            const target = logs[index];
+            if (target && target.recordId) {
+                await deleteRecordingBlob(target.recordId);
+            }
+            logs.splice(index, 1);
+            window.localStorage.setItem('x_stream_logs', JSON.stringify(logs));
+            window.loadStreamLogs();
+        };
+
+        window.renameStreamLog = function(index) {
+            let logs = JSON.parse(window.localStorage.getItem('x_stream_logs') || '[]');
+            if (!logs[index]) return;
+            const renamed = window.prompt('إعادة تسمية سجل البث:', logs[index].title || '');
+            if (renamed === null || !renamed.trim()) return;
+            logs[index].title = renamed.trim();
+            window.localStorage.setItem('x_stream_logs', JSON.stringify(logs));
+            window.loadStreamLogs();
+        };
+
+        window.clearAllStreamLogs = async function() {
+            let logs = JSON.parse(window.localStorage.getItem('x_stream_logs') || '[]');
+            for (const log of logs) {
+                if (log && log.recordId) {
+                    await deleteRecordingBlob(log.recordId);
+                }
+            }
+            window.localStorage.setItem('x_stream_logs', JSON.stringify([]));
+            window.loadStreamLogs();
+        };
+
+        window.addNewPost = function() {
+            const input = document.getElementById('postInputText');
+            if (!input) return;
+            const text = input.value.trim();
+            if (!text) return;
+            const id = getActiveUserIdentity();
+            let posts = JSON.parse(window.localStorage.getItem('x_app_posts') || '[]');
+            posts.unshift({
+                author: id.displayName,
+                handle: id.handle,
+                text: text,
+                likes: 0,
+                saves: 0,
+                likedByMe: false,
+                savedByMe: false,
+                edited: false
+            });
+            window.localStorage.setItem('x_app_posts', JSON.stringify(posts));
+            input.value = '';
+            if (window.loadPosts) window.loadPosts();
+        };
+
+        window.addNewArticle = function() {
+            const titleInput = document.getElementById('articleTitleInput');
+            const contentInput = document.getElementById('articleContentInput');
+            if (!titleInput || !contentInput) return;
+            const title = titleInput.value.trim();
+            const content = contentInput.value.trim();
+            if (!title || !content) return;
+            const id = getActiveUserIdentity();
+            let articles = JSON.parse(window.localStorage.getItem('x_app_articles') || '[]');
+            articles.unshift({ author: id.displayName, handle: id.handle, title, content, likes: 0, likedByMe: false, edited: false });
+            window.localStorage.setItem('x_app_articles', JSON.stringify(articles));
+            titleInput.value = '';
+            contentInput.value = '';
+            if (window.loadArticles) window.loadArticles();
+        };
+
+        window.handleVideoFileSelect = function(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                temporaryUploadedVideoFile = null;
+                return;
+            }
+            temporaryUploadedVideoFile = file;
+            const label = document.getElementById('uploadVideoFileLabel');
+            if (label) label.innerText = '✅ تم اختيار الفيديو: ' + file.name;
+        };
+
+        window.addNewVideo = async function() {
+            const input = document.getElementById('videoTitleInput');
+            if (!input) return;
+            const title = input.value.trim();
+            if (!title && !temporaryUploadedVideoFile) return;
+
+            const finalTitle = title || (temporaryUploadedVideoFile ? temporaryUploadedVideoFile.name : 'فيديو');
+            const id = getActiveUserIdentity();
+
+            let videoRecordId = '';
+            if (temporaryUploadedVideoFile) {
+                videoRecordId = 'vid_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+                const saved = await putRecordingBlob(videoRecordId, temporaryUploadedVideoFile);
+                if (!saved) videoRecordId = '';
+            }
+
+            let videos = JSON.parse(window.localStorage.getItem('x_app_videos') || '[]');
+            videos.unshift({ author: id.displayName, handle: id.handle, title: finalTitle, videoRecordId: videoRecordId });
+            window.localStorage.setItem('x_app_videos', JSON.stringify(videos));
+
+            input.value = '';
+            temporaryUploadedVideoFile = null;
+            const fileInput = document.getElementById('videoFileInput');
+            if (fileInput) fileInput.value = '';
+            const label = document.getElementById('uploadVideoFileLabel');
+            if (label) label.innerText = 'اختيار ملف فيديو من الجهاز (اختياري)';
+
+            if (window.loadVideos) await window.loadVideos();
+        };
+
+        window.autoCropAndHandleImage = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const TARGET_SIZE = 300;
+                    canvas.width = TARGET_SIZE;
+                    canvas.height = TARGET_SIZE;
+                    const ctx = canvas.getContext('2d');
+
+                    let sourceWidth = img.width;
+                    let sourceHeight = img.height;
+                    let sourceX = 0;
+                    let sourceY = 0;
+
+                    if (sourceWidth > sourceHeight) {
+                        sourceX = (sourceWidth - sourceHeight) / 2;
+                        sourceWidth = sourceHeight;
+                    } else {
+                        sourceY = (sourceHeight - sourceWidth) / 2;
+                        sourceHeight = sourceWidth;
+                    }
+
+                    ctx.drawImage(img, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, TARGET_SIZE, TARGET_SIZE);
+
+                    temporaryUploadedAvatar = canvas.toDataURL('image/jpeg', 0.85);
+                    const label = document.getElementById('uploadFileLabel');
+                    if (label) label.innerText = '✅ تم اختيار وضبط الصورة آلياً بنجاح';
+
+                    const previewThumb = document.getElementById('avatarPreviewThumb');
+                    const previewText = document.getElementById('avatarPreviewText');
+                    if (previewThumb) {
+                        previewThumb.src = temporaryUploadedAvatar;
+                        previewThumb.style.display = 'block';
+                    }
+                    if (previewText) {
+                        previewText.innerText = 'معاينة جاهزة قبل الضغط على حفظ التعديلات';
+                    }
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        function updateProfileStats() {
+            const id = getActiveUserIdentity();
+            const activeName = id.displayName;
+
+            const posts = JSON.parse(window.localStorage.getItem('x_app_posts') || '[]');
+            const articles = JSON.parse(window.localStorage.getItem('x_app_articles') || '[]');
+            const logs = JSON.parse(window.localStorage.getItem('x_stream_logs') || '[]');
+            const followed = getFollowedAuthors();
+
+            const myPostsCount = posts.filter(p => (p.author || '').trim() === activeName).length;
+            const myArticlesCount = articles.filter(a => (a.author || '').trim() === activeName).length;
+            const myLogsCount = logs.filter(l => (l.author || '').trim() === activeName).length;
+
+            const pEl = document.getElementById('statPostsCount');
+            const aEl = document.getElementById('statArticlesCount');
+            const lEl = document.getElementById('statLogsCount');
+            const fEl = document.getElementById('statFollowingCount');
+            if (pEl) pEl.innerText = String(myPostsCount);
+            if (aEl) aEl.innerText = String(myArticlesCount);
+            if (lEl) lEl.innerText = String(myLogsCount);
+            if (fEl) fEl.innerText = String(followed.length);
+        }
+
+        function renderAccentSwatches() {
+            const box = document.getElementById('accentSwatchesBox');
+            if (!box) return;
+            box.innerHTML = '';
+            ACCENT_COLORS.forEach((hex) => {
+                const sw = document.createElement('button');
+                sw.type = 'button';
+                sw.className = 'accent-swatch';
+                sw.style.background = hex;
+                sw.title = hex;
+                sw.onclick = () => window.setAccentColor(hex);
+                box.appendChild(sw);
+            });
+        }
+
+        window.loadUserProfileData = function() {
+            const id = getActiveUserIdentity();
+            const savedName = id.displayName;
+            const savedBio = window.localStorage.getItem('x_profile_bio_' + id.uid) || 'مهتم بنشر المحتوى والتكنولوجيا عبر منصة أثير.';
+            const savedLink = window.localStorage.getItem('x_profile_link_' + id.uid) || '';
+            const savedAvatar = window.localStorage.getItem('x_profile_avatar_' + id.uid) || '';
+
+            if (!temporaryUploadedAvatar) temporaryUploadedAvatar = savedAvatar;
+
+            const nameEl = document.getElementById('profileDisplayName');
+            if (nameEl) nameEl.innerText = savedName;
+
+            const handleEl = document.getElementById('profileDisplayHandle');
+            if (handleEl) handleEl.innerText = id.handle;
+
+            const bioEl = document.getElementById('profileDisplayBio');
+            if (bioEl) bioEl.innerText = savedBio;
+
+            const linkEl = document.getElementById('profileDisplayLink');
+            if (linkEl) {
+                if (savedLink) {
+                    linkEl.href = savedLink;
+                    linkEl.innerText = '🔗 ' + savedLink;
+                    linkEl.style.display = 'inline-block';
+                } else {
+                    linkEl.style.display = 'none';
+                }
+            }
+
+            const avatarBoxes = [document.getElementById('userAvatarBox'), document.getElementById('profileBigAvatarBox')];
+            avatarBoxes.forEach(box => {
+                if (box) {
+                    if (savedAvatar) {
+                        box.innerHTML = `<img src="${savedAvatar}" alt="Avatar">`;
+                    } else {
+                        box.innerText = savedName.charAt(0).toUpperCase();
+                    }
+                }
+            });
+
+            const previewThumb = document.getElementById('avatarPreviewThumb');
+            if (previewThumb && savedAvatar) {
+                previewThumb.src = savedAvatar;
+                previewThumb.style.display = 'block';
+            }
+
+            const editName = document.getElementById('editNameInput');
+            if (editName) editName.value = savedName;
+
+            const editBio = document.getElementById('editBioInput');
+            if (editBio) editBio.value = savedBio;
+
+            const editLink = document.getElementById('editLinkInput');
+            if (editLink) editLink.value = savedLink;
+
+            refreshLiveUserBanner();
+            renderAccentSwatches();
+            updateProfileStats();
+        };
+
+        window.saveProfileChanges = function() {
+            const id = getActiveUserIdentity();
+            const newName = document.getElementById('editNameInput').value.trim() || id.displayName;
+            const newBio = document.getElementById('editBioInput').value.trim();
+            const newLink = document.getElementById('editLinkInput').value.trim();
+
+            try {
+                window.localStorage.setItem('x_profile_name_' + id.uid, newName);
+                window.localStorage.setItem('x_profile_bio_' + id.uid, newBio);
+                window.localStorage.setItem('x_profile_link_' + id.uid, newLink);
+                
+                if (temporaryUploadedAvatar) {
+                    window.localStorage.setItem('x_profile_avatar_' + id.uid, temporaryUploadedAvatar);
+                }
+
+                window.loadUserProfileData();
+                window.loadPosts();
+                window.loadArticles();
+                window.loadVideos();
+                window.loadStreamLogs();
+
+                const msg = document.getElementById('profileSuccessMsg');
+                if (msg) {
+                    msg.style.display = 'block';
+                    setTimeout(() => { msg.style.display = 'none'; }, 2000);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        window.exportAccountBackup = function() {
+            const id = getActiveUserIdentity();
+            const backupPayload = {
+                exportedAt: new Date().toISOString(),
+                profile: {
+                    name: window.localStorage.getItem('x_profile_name_' + id.uid) || '',
+                    bio: window.localStorage.getItem('x_profile_bio_' + id.uid) || '',
+                    link: window.localStorage.getItem('x_profile_link_' + id.uid) || '',
+                    avatar: window.localStorage.getItem('x_profile_avatar_' + id.uid) || ''
+                },
+                followedAuthors: getFollowedAuthors(),
+                posts: JSON.parse(window.localStorage.getItem('x_app_posts') || '[]'),
+                articles: JSON.parse(window.localStorage.getItem('x_app_articles') || '[]'),
+                videos: JSON.parse(window.localStorage.getItem('x_app_videos') || '[]'),
+                streamLogsMeta: JSON.parse(window.localStorage.getItem('x_stream_logs') || '[]')
+            };
+
+            const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'atheer-backup-' + Date.now() + '.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        };
+
+        window.importAccountBackup = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const id = getActiveUserIdentity();
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.profile) {
+                        if (data.profile.name) window.localStorage.setItem('x_profile_name_' + id.uid, data.profile.name);
+                        if (typeof data.profile.bio === 'string') window.localStorage.setItem('x_profile_bio_' + id.uid, data.profile.bio);
+                        if (typeof data.profile.link === 'string') window.localStorage.setItem('x_profile_link_' + id.uid, data.profile.link);
+                        if (data.profile.avatar) {
+                            temporaryUploadedAvatar = data.profile.avatar;
+                            window.localStorage.setItem('x_profile_avatar_' + id.uid, data.profile.avatar);
+                        }
+                    }
+                    if (Array.isArray(data.followedAuthors)) window.localStorage.setItem('x_followed_authors', JSON.stringify(data.followedAuthors));
+                    if (Array.isArray(data.posts)) window.localStorage.setItem('x_app_posts', JSON.stringify(data.posts));
+                    if (Array.isArray(data.articles)) window.localStorage.setItem('x_app_articles', JSON.stringify(data.articles));
+                    if (Array.isArray(data.videos)) window.localStorage.setItem('x_app_videos', JSON.stringify(data.videos));
+                    if (Array.isArray(data.streamLogsMeta)) window.localStorage.setItem('x_stream_logs', JSON.stringify(data.streamLogsMeta));
+
+                    window.loadUserProfileData();
+                    window.loadPosts();
+                    window.loadArticles();
+                    window.loadVideos();
+                    window.loadStreamLogs();
+                } catch (err) {}
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        };
+
+        window.shareProfileLink = function() {
+            const id = getActiveUserIdentity();
+            const profileUrl = window.location.href.split('?')[0] + '?user=' + encodeURIComponent(id.displayName);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(profileUrl).catch(() => {});
+            }
+        };
+
+        window.loadPosts = function() {
+            const id = getActiveUserIdentity();
+            const feed = document.getElementById('postsFeed');
+            if (!feed) return;
+            const searchQuery = (document.getElementById('postsSearchInput')?.value || '').trim().toLowerCase();
+            const followed = getFollowedAuthors();
+
+            let posts = JSON.parse(window.localStorage.getItem('x_app_posts') || '[]');
+            if (posts.length === 0) {
+                feed.innerHTML = '';
+                updateProfileStats();
+                return;
+            }
+            const savedAvatar = window.localStorage.getItem('x_profile_avatar_' + id.uid) || '';
+
+            const indexedPosts = posts
+                .map((p, idx) => ({ item: p, idx: idx }))
+                .filter(({ item }) => {
+                    if (!searchQuery) return true;
+                    return (item.text || '').toLowerCase().includes(searchQuery)
+                        || (item.author || '').toLowerCase().includes(searchQuery)
+                        || (item.handle || '').toLowerCase().includes(searchQuery);
+                });
+
+            if (indexedPosts.length === 0) {
+                feed.innerHTML = `<div style="padding: 32px; text-align: center; color: #7c8590; font-size: 14px;">لا توجد نتائج مطابقة للبحث.</div>`;
+                updateProfileStats();
+                return;
+            }
+
+            feed.innerHTML = indexedPosts.map(({ item: p, idx }) => {
+                const likes = Number(p.likes || 0);
+                const saves = Number(p.saves || 0);
+                const isFollowing = followed.includes((p.author || '').trim());
+                const encodedText = encodeURIComponent(p.text || '');
+                const encodedAuthor = encodeURIComponent(p.author || '');
+                return `
+                    <div class="card-item">
+                        <div class="avatar-img-container">
+                            ${savedAvatar ? `<img src="${savedAvatar}" alt="Avatar">` : p.author.charAt(0).toUpperCase()}
+                        </div>
+                        <div class="card-body">
+                            <div class="card-header">
+                                <div class="author-info-group">
+                                    <span class="author-name">${p.author}</span>
+                                    <span class="author-handle">${p.handle || '@user'}</span>
+                                    ${p.edited ? `<span class="edited-tag">معدّل</span>` : ''}
+                                </div>
+                                <div class="card-header-actions">
+                                    <button type="button" class="follow-mini-btn ${isFollowing ? 'following' : ''}" onclick="toggleFollowAuthor(decodeURIComponent('${encodedAuthor}'))">${isFollowing ? '✓ متابَع' : '+ متابعة'}</button>
+                                    <button type="button" class="action-chip-btn" onclick="editPostItem(${idx})" title="تعديل">✏️</button>
+                                    <button class="delete-item-btn" onclick="deletePost(${idx})" title="حذف التغريدة">🗑️</button>
+                                </div>
+                            </div>
+                            <div class="card-text">${formatTextWithHashtags(p.text)}</div>
+                            <div class="card-actions-bar">
+                                <button type="button" class="action-chip-btn ${p.likedByMe ? 'active' : ''}" onclick="togglePostReaction(${idx}, 'likes')">♥ ${likes}</button>
+                                <button type="button" class="action-chip-btn ${p.savedByMe ? 'active' : ''}" onclick="togglePostReaction(${idx}, 'saves')">🔖 ${saves}</button>
+                                <button type="button" class="action-chip-btn" onclick="copyTextToClipboard(decodeURIComponent('${encodedText}'))">📋 نسخ</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            updateProfileStats();
+        };
+
+        window.loadArticles = function() {
+            const feed = document.getElementById('articlesFeed');
+            if (!feed) return;
+            const searchQuery = (document.getElementById('articlesSearchInput')?.value || '').trim().toLowerCase();
+            const followed = getFollowedAuthors();
+
+            let articles = JSON.parse(window.localStorage.getItem('x_app_articles') || '[]');
+            if (articles.length === 0) {
+                articles = [{ author: 'الإدارة', handle: '@admin', title: 'مرحباً بك في قسم المقالات', content: 'هنا يمكنك نشر مقالاتك ومشاركتها مع المتابعين بكل سهولة.', likes: 0, likedByMe: false, edited: false }];
+            }
+
+            const indexedArticles = articles
+                .map((a, idx) => ({ item: a, idx: idx }))
+                .filter(({ item }) => {
+                    if (!searchQuery) return true;
+                    return (item.title || '').toLowerCase().includes(searchQuery)
+                        || (item.content || '').toLowerCase().includes(searchQuery)
+                        || (item.author || '').toLowerCase().includes(searchQuery);
+                });
+
+            if (indexedArticles.length === 0) {
+                feed.innerHTML = `<div style="padding: 32px; text-align: center; color: #7c8590; font-size: 14px;">لا توجد مقالات مطابقة للبحث.</div>`;
+                updateProfileStats();
+                return;
+            }
+
+            feed.innerHTML = indexedArticles.map(({ item: a, idx }) => {
+                const likes = Number(a.likes || 0);
+                const isFollowing = followed.includes((a.author || '').trim());
+                const copyPayload = encodeURIComponent((a.title || '') + '\n\n' + (a.content || ''));
+                const encodedAuthor = encodeURIComponent(a.author || '');
+                return `
+                    <div class="card-item">
+                        <div class="avatar-img-container">${a.author.charAt(0).toUpperCase()}</div>
+                        <div class="card-body">
+                            <div class="card-header">
+                                <div class="author-info-group">
+                                    <span class="author-name">${a.author}</span>
+                                    ${a.handle ? `<span class="author-handle">${a.handle}</span>` : ''}
+                                    ${a.edited ? `<span class="edited-tag">معدّل</span>` : ''}
+                                </div>
+                                <div class="card-header-actions">
+                                    <button type="button" class="follow-mini-btn ${isFollowing ? 'following' : ''}" onclick="toggleFollowAuthor(decodeURIComponent('${encodedAuthor}'))">${isFollowing ? '✓ متابَع' : '+ متابعة'}</button>
+                                    <button type="button" class="action-chip-btn" onclick="editArticleItem(${idx})" title="تعديل">✏️</button>
+                                    <button class="delete-item-btn" onclick="deleteArticle(${idx})" title="حذف المقال">🗑️</button>
+                                </div>
+                            </div>
+                            <h3 style="color:#fff; font-size:16px; margin:6px 0;">${a.title}</h3>
+                            <div class="card-text">${formatTextWithHashtags(a.content)}</div>
+                            <div class="card-actions-bar">
+                                <button type="button" class="action-chip-btn ${a.likedByMe ? 'active' : ''}" onclick="toggleArticleLike(${idx})">♥ ${likes}</button>
+                                <button type="button" class="action-chip-btn" onclick="copyTextToClipboard(decodeURIComponent('${copyPayload}'))">📋 نسخ المقال</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            updateProfileStats();
+        };
+
+        window.loadVideos = async function() {
+            const feed = document.getElementById('videosFeed');
+            if (!feed) return;
+            const followed = getFollowedAuthors();
+            let videos = JSON.parse(window.localStorage.getItem('x_app_videos') || '[]');
+            if (videos.length === 0) {
+                feed.innerHTML = `<div style="padding: 40px; text-align: center; color: #71767b; font-size: 14px;">لا توجد فيديوهات منشورة حتى الآن. انشر فيديو جديداً من الأعلى! 📹</div>`;
+                return;
+            }
+
+            const rendered = await Promise.all(videos.map(async (v, idx) => {
+                let videoSrc = '';
+                if (v.videoRecordId) {
+                    const blob = await getRecordingBlob(v.videoRecordId);
+                    if (blob && blob.size > 0) {
+                        videoSrc = URL.createObjectURL(blob);
+                        activeBlobUrls.push(videoSrc);
+                    }
+                }
+                const isFollowing = followed.includes((v.author || '').trim());
+                const encodedAuthor = encodeURIComponent(v.author || '');
+                return `
+                    <div class="card-item">
+                        <div class="avatar-img-container">${v.author.charAt(0).toUpperCase()}</div>
+                        <div class="card-body">
+                            <div class="card-header">
+                                <div class="author-info-group">
+                                    <span class="author-name">${v.author}</span>
+                                    ${v.handle ? `<span class="author-handle">${v.handle}</span>` : ''}
+                                </div>
+                                <div class="card-header-actions">
+                                    <button type="button" class="follow-mini-btn ${isFollowing ? 'following' : ''}" onclick="toggleFollowAuthor(decodeURIComponent('${encodedAuthor}'))">${isFollowing ? '✓ متابَع' : '+ متابعة'}</button>
+                                    <button class="delete-item-btn" onclick="deleteVideo(${idx})" title="حذف الفيديو">🗑️</button>
+                                </div>
+                            </div>
+                            <div style="font-weight:700; color:#fff; margin-bottom:6px;">${v.title}</div>
+                            ${videoSrc
+                                ? `<video class="recorded-video-player" controls playsinline preload="metadata" src="${videoSrc}"></video>`
+                                : `<div class="media-placeholder">▶ عرض الفيديو</div>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }));
+
+            feed.innerHTML = rendered.join('');
+        };
+
+        window.loadStreamLogs = async function() {
+            const feed = document.getElementById('streamLogsFeed');
+            const clearBtn = document.getElementById('clearAllLogsBtn');
+            if (!feed) return;
+
+            activeBlobUrls.forEach((url) => {
+                try { URL.revokeObjectURL(url); } catch (e) {}
+            });
+            activeBlobUrls = [];
+
+            let logs = JSON.parse(window.localStorage.getItem('x_stream_logs') || '[]');
+            if (clearBtn) clearBtn.style.display = logs.length > 0 ? 'inline-block' : 'none';
+
+            if (logs.length === 0) {
+                feed.innerHTML = `<div style="padding: 40px; text-align: center; color: #71767b; font-size: 14px;">لا توجد سجلات بث محفوظة حتى الآن. ابدأ بثاً جديداً وانهِه ليتم تسجيله وعرضه بالفيديو هنا! 🔴</div>`;
+                updateProfileStats();
+                return;
+            }
+
+            const renderedItems = await Promise.all(logs.map(async (log, idx) => {
+                let playableUrl = log.videoUrl || '';
+                if (log.recordId) {
+                    const blob = await getRecordingBlob(log.recordId);
+                    if (blob && blob.size > 0) {
+                        playableUrl = URL.createObjectURL(blob);
+                        activeBlobUrls.push(playableUrl);
+                    }
+                }
+
+                const giftsLine = log.giftsCount
+                    ? `<div style="font-size:12.5px; color:#ffe066; margin-bottom:6px;">🎁 ${log.giftsCount}${log.giftsBreakdown ? ' (' + log.giftsBreakdown + ')' : ''}</div>`
+                    : '';
+
+                return `
+                    <div class="card-item">
+                        <div class="avatar-img-container" style="background: linear-gradient(135deg, #f4212e 0%, #b8121d 100%);">🔴</div>
+                        <div class="card-body">
+                            <div class="card-header">
+                                <div class="author-info-group">
+                                    <span class="author-name">${log.author}</span>
+                                    ${log.handle ? `<span class="author-handle">${log.handle}</span>` : ''}
+                                </div>
+                                <div class="card-header-actions">
+                                    <button type="button" class="action-chip-btn" onclick="renameStreamLog(${idx})" title="إعادة تسمية">✏️</button>
+                                    <button class="delete-item-btn" onclick="deleteStreamLog(${idx})" title="حذف السجل">🗑️</button>
+                                </div>
+                            </div>
+                            <div style="font-weight:700; color:#fff; margin-bottom:6px;">${log.title}</div>
+                            ${giftsLine}
+                            ${playableUrl
+                                ? `<video class="recorded-video-player" controls playsinline preload="metadata" src="${playableUrl}"></video>
+                                   <div><a class="log-download-link" href="${playableUrl}" download="stream-${idx + 1}.webm">⬇ تحميل التسجيل</a></div>`
+                                : `<div class="media-placeholder" style="color: #f4212e;">🔴 بث مسجل (${log.durationSec || 1} ث)</div>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }));
+
+            feed.innerHTML = renderedItems.join('');
+            updateProfileStats();
+        };
+
+        window.chooseCameraOption = function(camId, btnEl) {
+            selectedCameraType = camId;
+            document.querySelectorAll('.inline-cam-btn').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+            startStandbyPreview();
+        };
+
+        function renderThreeCameraOptions() {
+            const bar = document.getElementById('inlineCameraBar');
+            if (!bar) return;
+            bar.innerHTML = '';
+
+            CAMERA_CHOICES.forEach((choice) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'inline-cam-btn' + (selectedCameraType === choice.id ? ' active' : '');
+                btn.innerText = choice.label;
+                btn.onclick = () => window.chooseCameraOption(choice.id, btn);
+                bar.appendChild(btn);
+            });
+
+            const muteBtn = document.createElement('button');
+            muteBtn.type = 'button';
+            muteBtn.id = 'muteMicBtn';
+            muteBtn.className = 'inline-cam-btn' + (isMicMuted ? ' active' : '');
+            muteBtn.innerText = isMicMuted ? '🔇 الميكروفون مكتوم' : '🎤 الميكروفون مفعل';
+            muteBtn.onclick = () => window.toggleMicMute();
+            bar.appendChild(muteBtn);
+        }
+
+        function renderGiftButtons() {
+            const row = document.getElementById('giftsButtonsRow');
+            if (!row) return;
+            row.innerHTML = '';
+
+            LIVE_GIFTS.forEach((g) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'gift-send-btn';
+                btn.innerHTML = `<span>${g.label}</span><span class="gift-cost-tag">🪙 ${g.cost}</span>`;
+                btn.onclick = () => window.sendLiveGift(g.id);
+                row.appendChild(btn);
+            });
+
+            const pkgGrid = document.getElementById('coinPackagesGrid');
+            if (pkgGrid) {
+                pkgGrid.innerHTML = '';
+                COIN_PACKAGES.forEach((pkg) => {
+                    const pBtn = document.createElement('button');
+                    pBtn.type = 'button';
+                    pBtn.className = 'pkg-btn' + (selectedTopupCoins === pkg.coins ? ' active' : '');
+                    pBtn.innerText = `🪙 ${pkg.coins} (${pkg.price})`;
+                    pBtn.onclick = () => window.selectCoinPackage(pkg.coins, pBtn);
+                    pkgGrid.appendChild(pBtn);
+                });
+            }
+        }
+
+        async function resolveConstraintForChoice() {
+            const chosen = CAMERA_CHOICES.find(c => c.id === selectedCameraType) || CAMERA_CHOICES[0];
+            let cams = [];
+
+            try {
+                if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+                    const devices = await navigator.mediaDevices.enumerateDevices();
+                    cams = devices.filter(d => d.kind === 'videoinput');
+                }
+            } catch (e) {}
+
+            if (chosen.id === 'external') {
+                const extCam = cams.find(d => d.deviceId && !/front|back|user|environment|integrated|facetime|built-in/i.test(d.label || ''))
+                    || (cams.length > 1 ? cams[cams.length - 1] : cams[0]);
+                if (extCam && extCam.deviceId) {
+                    return { deviceId: { exact: extCam.deviceId } };
+                }
+                return true;
+            }
+
+            if (chosen.id === 'back') {
+                const backCam = cams.find(d => d.deviceId && /back|rear|environment/i.test(d.label || ''));
+                if (backCam && backCam.deviceId) {
+                    return { deviceId: { exact: backCam.deviceId } };
+                }
+                return { facingMode: { ideal: 'environment' } };
+            }
+
+            const frontCam = cams.find(d => d.deviceId && /front|user|integrated|facetime/i.test(d.label || ''));
+            if (frontCam && frontCam.deviceId) {
+                return { deviceId: { exact: frontCam.deviceId } };
+            }
+            return { facingMode: { ideal: 'user' } };
+        }
+
+        async function startStandbyPreview() {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
+            stopMediaStream();
+
+            try {
+                const constraint = await resolveConstraintForChoice();
+                currentStream = await navigator.mediaDevices.getUserMedia({ video: constraint, audio: true });
+            } catch (err1) {
+                try {
+                    currentStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                } catch (err2) {
+                    try {
+                        currentStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                    } catch (err3) {
+                        return;
+                    }
+                }
+            }
+
+            if (currentStream && isMicMuted) {
+                currentStream.getAudioTracks().forEach(track => { track.enabled = false; });
+            }
+
+            const videoElement = document.getElementById('liveVideoElement');
+            if (videoElement && currentStream) {
+                videoElement.srcObject = currentStream;
+                videoElement.play().catch(() => {});
+            }
+        }
+
+        async function saveStreamToLogs(blob, durationSec) {
+            const id = getActiveUserIdentity();
+            const chosen = CAMERA_CHOICES.find(c => c.id === selectedCameraType);
+            const camLabel = chosen ? chosen.label : '';
+            const customTitleInput = document.getElementById('liveTitleInput');
+            const customTitle = customTitleInput ? customTitleInput.value.trim() : '';
+            const recordId = 'rec_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+
+            let savedInDb = false;
+            if (blob && blob.size > 0) {
+                savedInDb = await putRecordingBlob(recordId, blob);
+            }
+
+            const breakdownEntries = Object.entries(currentSessionGiftsSummary).map(([k, v]) => `${k} ×${v}`);
+            const defaultTitle = 'بث مباشر (' + camLabel + ') - ' + new Date().toLocaleTimeString('ar-SA');
+            let logs = JSON.parse(window.localStorage.getItem('x_stream_logs') || '[]');
+            logs.unshift({
+                id: recordId,
+                recordId: savedInDb ? recordId : '',
+                author: id.displayName,
+                handle: id.handle,
+                title: customTitle ? (customTitle + ' — ' + camLabel) : defaultTitle,
+                videoUrl: (!savedInDb && blob && blob.size > 0) ? URL.createObjectURL(blob) : '',
+                durationSec: Math.max(1, durationSec || 1),
+                giftsCount: currentSessionGiftsCount,
+                giftsBreakdown: breakdownEntries.join('، ')
+            });
+
+            if (customTitleInput) customTitleInput.value = '';
+            resetGiftSession();
+
+            try {
+                window.localStorage.setItem('x_stream_logs', JSON.stringify(logs));
+            } catch (storageErr) {
+                try {
+                    logs = logs.slice(0, 5);
+                    window.localStorage.setItem('x_stream_logs', JSON.stringify(logs));
+                } catch (e2) {}
+            }
+
+            if (window.loadStreamLogs) await window.loadStreamLogs();
+        }
+
+        function createRecorder(stream) {
+            if (typeof MediaRecorder === 'undefined') return null;
+
+            if (MediaRecorder.isTypeSupported) {
+                const candidates = [
+                    'video/webm;codecs=vp8,opus',
+                    'video/webm;codecs=vp9,opus',
+                    'video/webm',
+                    'video/mp4'
+                ];
+                for (const mime of candidates) {
+                    if (MediaRecorder.isTypeSupported(mime)) {
+                        try {
+                            return new MediaRecorder(stream, { mimeType: mime });
+                        } catch (e) {}
+                    }
+                }
+            }
+
+            try {
+                return new MediaRecorder(stream);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function startCanvasStreamFallback(videoElement) {
+            stopCanvasFallback();
+            if (!videoElement || typeof document.createElement !== 'function') return null;
+            const canvas = document.createElement('canvas');
+            canvas.width = 480;
+            canvas.height = 360;
+            const ctx = canvas.getContext('2d');
+            if (!ctx || typeof canvas.captureStream !== 'function') return null;
+
+            const drawFrame = () => {
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                try {
+                    if (videoElement.readyState >= 2) {
+                        ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                    }
+                } catch (e) {}
+            };
+
+            drawFrame();
+            canvasCaptureTimer = setInterval(drawFrame, 100);
+            try {
+                return canvas.captureStream(10);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        window.startLiveRecording = async function() {
+            const badge = document.getElementById('liveBadgeIndicator');
+
+            if (!currentStream) {
+                await startStandbyPreview();
+            }
+
+            const videoElement = document.getElementById('liveVideoElement');
+            if (videoElement && currentStream && videoElement.srcObject !== currentStream) {
+                videoElement.srcObject = currentStream;
+            }
+            if (videoElement) {
+                videoElement.play().catch(() => {});
+            }
+
+            if (isLiveStarted && mediaRecorder && mediaRecorder.state === 'recording') {
+                return;
+            }
+
+            recordedChunks = [];
+            streamStartedAt = Date.now();
+            startLiveTimer();
+
+            const recordSourceStream = currentStream || (videoElement ? startCanvasStreamFallback(videoElement) : null);
+            mediaRecorder = recordSourceStream ? createRecorder(recordSourceStream) : null;
+
+            if (mediaRecorder) {
+                mediaRecorder.ondataavailable = function(event) {
+                    if (event.data && event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+
+                try {
+                    mediaRecorder.start(250);
+                } catch (e) {
+                    try {
+                        mediaRecorder.start();
+                    } catch (err) {}
+                }
+            }
+
+            isLiveStarted = true;
+            if (badge) badge.style.display = 'flex';
+        };
+
+        window.stopLiveRecording = async function() {
+            if (isStoppingLive) return;
+            isStoppingLive = true;
+
+            const badge = document.getElementById('liveBadgeIndicator');
+            if (badge) badge.style.display = 'none';
+
+            const durationSec = streamStartedAt ? Math.round((Date.now() - streamStartedAt) / 1000) : 1;
+            const wasRecording = isLiveStarted || (mediaRecorder && mediaRecorder.state !== 'inactive');
+
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                await new Promise((resolve) => {
+                    let settled = false;
+                    const done = () => {
+                        if (settled) return;
+                        settled = true;
+                        clearTimeout(timer);
+                        resolve();
+                    };
+
+                    const timer = setTimeout(done, 2500);
+
+                    mediaRecorder.addEventListener('stop', async function onRecorderStop() {
+                        mediaRecorder.removeEventListener('stop', onRecorderStop);
+                        const blob = recordedChunks.length > 0
+                            ? new Blob(recordedChunks, { type: recordedChunks[0]?.type || 'video/webm' })
+                            : null;
+                        recordedChunks = [];
+                        await saveStreamToLogs(blob, durationSec);
+                        done();
+                    }, { once: true });
+
+                    try {
+                        if (typeof mediaRecorder.requestData === 'function' && mediaRecorder.state === 'recording') {
+                            mediaRecorder.requestData();
+                        }
+                    } catch (e) {}
+
+                    try {
+                        mediaRecorder.stop();
+                    } catch (e) {
+                        done();
+                    }
+                });
+            } else if (recordedChunks.length > 0) {
+                const blob = new Blob(recordedChunks, { type: recordedChunks[0]?.type || 'video/webm' });
+                recordedChunks = [];
+                await saveStreamToLogs(blob, durationSec);
+            } else if (wasRecording) {
+                await saveStreamToLogs(null, durationSec);
+            }
+
+            isLiveStarted = false;
+            streamStartedAt = null;
+            mediaRecorder = null;
+            stopMediaStream();
+            isStoppingLive = false;
+
+            window.switchTab('posts', 'المنشورات');
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            applySavedAccent();
+            renderThreeCameraOptions();
+            renderGiftButtons();
+            window.loadUserProfileData();
+            window.loadPosts();
+            window.loadArticles();
+            window.loadVideos();
+            window.loadStreamLogs();
+            checkReturnedVisaInvoice();
+        });
+    </script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-nav">
+            <div class="top-nav-header">
+                <h2 id="sectionTitle">المنشورات</h2>
+                <button class="profile-nav-btn" onclick="switchTab('profile', 'الملف الشخصي')">الملف الشخصي</button>
+            </div>
+            <div class="nav-tabs">
+                <div class="tab-item active" onclick="switchTab('posts', 'المنشورات')">المنشورات</div>
+                <div class="tab-item" onclick="switchTab('articles', 'المقالات')">المقالات</div>
+                <div class="tab-item" onclick="switchTab('videos', 'الفيديوهات')">الفيديوهات</div>
+                <div class="tab-item" onclick="switchTab('live', 'البث المباشر')">البث المباشر</div>
+                <div class="tab-item" onclick="switchTab('streamLogs', 'سجلات البث')">سجلات البث</div>
+            </div>
+        </div>
+
+        <div id="postsSection" class="content-section active">
+            <div class="post-box">
+                <div id="userAvatarBox" class="avatar-img-container">A</div>
+                <div class="post-input-wrapper">
+                    <textarea id="postInputText" placeholder="ماذا يحدث؟ شارك أفكارك..."></textarea>
+                    <div class="post-actions">
+                        <button class="tweet-btn" onclick="addNewPost()">نشر</button>
+                    </div>
+                </div>
+            </div>
+            <div class="search-bar-box">
+                <input id="postsSearchInput" class="search-input" type="text" placeholder="ابحث في المنشورات أو الوسوم..." oninput="loadPosts()">
+            </div>
+            <div id="postsFeed"></div>
+        </div>
+
+        <div id="articlesSection" class="content-section">
+            <div class="input-panel">
+                <input id="articleTitleInput" class="custom-input" type="text" placeholder="عنوان المقال...">
+                <textarea id="articleContentInput" class="custom-input" placeholder="اكتب محتوى المقال هنا..."></textarea>
+                <button class="tweet-btn" onclick="addNewArticle()">نشر المقال</button>
+            </div>
+            <div class="search-bar-box">
+                <input id="articlesSearchInput" class="search-input" type="text" placeholder="ابحث في المقالات..." oninput="loadArticles()">
+            </div>
+            <div id="articlesFeed"></div>
+        </div>
+
+        <div id="videosSection" class="content-section">
+            <div class="input-panel">
+                <input id="videoTitleInput" class="custom-input" type="text" placeholder="عنوان الفيديو...">
+                <div class="file-upload-wrapper">
+                    <label id="uploadVideoFileLabel" class="file-upload-btn">اختيار ملف فيديو من الجهاز (اختياري)</label>
+                    <input id="videoFileInput" type="file" accept="video/*" onchange="handleVideoFileSelect(event)">
+                </div>
+                <button class="tweet-btn" onclick="addNewVideo()">إضافة فيديو</button>
+            </div>
+            <div id="videosFeed"></div>
+        </div>
+
+        <div id="liveSection" class="content-section">
+            <div class="live-studio-box">
+                <div class="live-user-banner">
+                    <span id="liveActiveUserLabel" style="font-weight:800; color:#ffffff;">المستخدم (@user)</span>
+                    <span id="liveGiftsCounter" style="font-weight:700; color:#ffe066;">🎁 0</span>
+                </div>
+                <div class="live-meta-bar">
+                    <input id="liveTitleInput" class="custom-input" style="margin-bottom:0;" type="text" placeholder="عنوان البث المباشر (اختياري)...">
+                    <span id="liveTimerDisplay" class="live-timer-pill">⏱ 00:00</span>
+                </div>
+                <div id="inlineCameraBar" class="inline-camera-bar"></div>
+                <div class="live-preview-container">
+                    <video id="liveVideoElement" autoplay playsinline muted></video>
+                    <div id="liveBadgeIndicator" class="live-badge">🔴 مباشر</div>
+                    <div id="giftToastBanner" class="gift-toast-banner"></div>
+                </div>
+                <div class="live-actions-group">
+                    <button id="startLiveBtn" class="start-live-btn" onclick="startLiveRecording()">بدء البث</button>
+                    <button id="stopLiveBtn" class="stop-live-btn" onclick="stopLiveRecording()">إيقاف البث</button>
+                </div>
+
+                <!-- قسم الهدايا المستقل تحت البث -->
+                <div class="gifts-standalone-section">
+                    <div class="gifts-section-header">
+                        <span class="gifts-section-title">🎁 الهدايا</span>
+                        <div class="coins-balance-group">
+                            <span id="userCoinsBalanceBadge" class="coins-pill">🪙 العملات: 0</span>
+                            <button type="button" class="topup-open-btn" onclick="openTopupPanel()">شحن الان</button>
+                        </div>
+                    </div>
+
+                    <div id="giftsButtonsRow" class="gifts-buttons-row"></div>
+
+                    <div id="noCoinsAlertBox" class="no-coins-alert-box">
+                        <span>لا يوجد لديك عملات اشحن الان</span>
+                        <button type="button" class="topup-open-btn" onclick="openTopupPanel()">شحن الان</button>
+                    </div>
+
+                    <div id="topupPanel" class="topup-panel">
+                        <h5>اختر باقة العملات وطريقة الدفع</h5>
+                        <div id="coinPackagesGrid" class="packages-grid"></div>
+
+                        <div class="payment-methods-grid">
+                            <button type="button" class="pay-method-btn active" onclick="selectPaymentMethod('visa', this)">💳 فيزا</button>
+                            <button type="button" class="pay-method-btn" onclick="selectPaymentMethod('mobile', this)">📱 رصيد الجوال</button>
+                        </div>
+
+                        <div id="visaPayNote" style="font-size:12.5px; color:#9ba4b0; margin-bottom:10px;">
+                            سيتم تحويلك إلى صفحة الدفع الآمنة لإتمام الخصم ببطاقة فيزا ثم إضافة العملات تلقائياً.
+                        </div>
+
+                        <input id="mobilePayInput" class="custom-input" style="display:none;" type="tel" placeholder="أدخل رقم الجوال للشحن عبر رصيد الجوال">
+
+                        <button type="button" class="confirm-topup-btn" onclick="confirmCoinsTopup()">إتمام الشحن</button>
+                        <div id="topupStatusMsg" class="topup-status-msg"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="streamLogsSection" class="content-section">
+            <div class="log-actions-header">
+                <span style="font-size:13px; color:#8c96a2; font-weight:700;">أرشيف التسجيلات المحفوظة</span>
+                <button id="clearAllLogsBtn" type="button" class="action-chip-btn" style="display:none;" onclick="clearAllStreamLogs()">🗑 مسح الكل</button>
+            </div>
+            <div id="streamLogsFeed"></div>
+        </div>
+
+        <div id="profileSection" class="content-section">
+            <div class="profile-view">
+                <div class="profile-header-card">
+                    <div class="profile-user-info-wrapper">
+                        <div id="profileBigAvatarBox" class="profile-big-avatar">A</div>
+                        <div class="profile-info">
+                            <h3 id="profileDisplayName">المستخدم</h3>
+                            <p id="profileDisplayHandle">@user</p>
+                        </div>
+                    </div>
+                    <button class="exit-profile-btn" onclick="switchTab('posts', 'المنشورات')">رجوع</button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div id="statPostsCount" class="stat-num">0</div>
+                        <div class="stat-label">منشوراتي</div>
+                    </div>
+                    <div class="stat-box">
+                        <div id="statArticlesCount" class="stat-num">0</div>
+                        <div class="stat-label">مقالاتي</div>
+                    </div>
+                    <div class="stat-box">
+                        <div id="statLogsCount" class="stat-num">0</div>
+                        <div class="stat-label">تسجيلاتي</div>
+                    </div>
+                    <div class="stat-box">
+                        <div id="statFollowingCount" class="stat-num">0</div>
+                        <div class="stat-label">متابَعاتي</div>
+                    </div>
+                </div>
+
+                <p id="profileDisplayBio" class="profile-bio"></p>
+                <a id="profileDisplayLink" class="profile-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+
+                <div>
+                    <button class="profile-nav-btn" onclick="shareProfileLink()">مشاركة رابط الملف</button>
+                </div>
+
+                <div class="accent-picker-row">
+                    <span style="font-size:12.5px; color:#9ba4b0; font-weight:700;">لون التمييز:</span>
+                    <div id="accentSwatchesBox" style="display:flex; gap:8px;"></div>
+                </div>
+
+                <div class="edit-profile-box">
+                    <h4>تعديل الملف الشخصي</h4>
+                    <input id="editNameInput" class="custom-input" type="text" placeholder="الاسم">
+                    <textarea id="editBioInput" class="custom-input" placeholder="النبذة التعريفية"></textarea>
+                    <input id="editLinkInput" class="custom-input" type="text" placeholder="رابط خارجي">
+
+                    <div class="avatar-preview-row">
+                        <img id="avatarPreviewThumb" class="avatar-preview-thumb" alt="معاينة الصورة">
+                        <span id="avatarPreviewText" class="avatar-preview-text">معاينة الصورة الشخصية</span>
+                    </div>
+
+                    <div class="file-upload-wrapper">
+                        <label id="uploadFileLabel" class="file-upload-btn">اختيار صورة شخصية</label>
+                        <input type="file" accept="image/*" onchange="autoCropAndHandleImage(event)">
+                    </div>
+
+                    <button class="tweet-btn" onclick="saveProfileChanges()">حفظ التعديلات</button>
+                    <div id="profileSuccessMsg" class="success-alert">تم حفظ التعديلات بنجاح</div>
+
+                    <div class="backup-actions-row">
+                        <button type="button" class="action-chip-btn" onclick="exportAccountBackup()">⬇ تصدير نسخة JSON</button>
+                        <label class="action-chip-btn" style="cursor:pointer;">
+                            ⬆ استيراد نسخة JSON
+                            <input type="file" accept="application/json,.json" style="display:none;" onchange="importAccountBackup(event)">
+                        </label>
+                    </div>
+
+                    <div class="account-actions-stack">
+                        <button id="logoutBtn" class="profile-logout-btn" onclick="logoutUser()">تسجيل خروج</button>
+                        <button id="deleteAccountBtn" class="delete-account-btn" onclick="deleteAccount()">حذف الحساب</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
