@@ -831,7 +831,7 @@
 
     <script>
         // غيّر هذا الرابط إلى رابط خادم Node.js الخاص بك بعد رفعه
-        const PAYMENT_API_BASE = 'http://localhost:3000';
+        const PAYMENT_API_BASE = 'https://atheerapp2.onrender.com';
 
         let temporaryUploadedAvatar = '';
         let temporaryUploadedVideoFile = null;
@@ -1163,7 +1163,7 @@
         async function checkReturnedVisaInvoice() {
             try {
                 const params = new URLSearchParams(window.location.search);
-                const invoiceId = params.get('id');
+                const invoiceId = params.get('id') || params.get('invoice_id') || params.get('payment_id');
                 if (!invoiceId) return;
 
                 const pendingCoins = Number(window.localStorage.getItem('x_pending_topup_coins') || 0);
