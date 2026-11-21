@@ -10,7 +10,7 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 const MOYASAR_SECRET_KEY = process.env.MOYASAR_SECRET_KEY || 'sk_test_YOUR_SECRET_KEY_HERE';
-const APP_RETURN_URL = process.env.APP_RETURN_URL || 'http://localhost:5500/index.html';
+const APP_RETURN_URL = process.env.APP_RETURN_URL || 'https://atheerapp.netlify.app/';
 
 // الباقات المعتمدة (المبالغ بالهللة: 500 = 5.00 SAR)
 const PACKAGES = {
