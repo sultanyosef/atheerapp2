@@ -49,12 +49,20 @@
             align-items: center; 
             padding: 16px 22px; 
             border-bottom: 1px solid #1b2026; 
+            gap: 10px;
+            flex-wrap: wrap;
         }
         .top-nav-header h2 {
             font-size: 21px;
             font-weight: 850;
             color: #ffffff;
             letter-spacing: -0.4px;
+        }
+        .header-actions-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         
         .profile-nav-btn {
@@ -826,6 +834,54 @@
             display: none;
         }
 
+        /* أقسام اللغة واتصل بنا والخصوصية */
+        .info-panel-box {
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .info-card {
+            background: linear-gradient(180deg, rgba(20, 25, 33, 0.75) 0%, rgba(12, 15, 20, 0.88) 100%);
+            border: 1px solid #23282e;
+            border-radius: 16px;
+            padding: 18px;
+        }
+        .info-card h3 {
+            font-size: 17px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        .info-card p {
+            font-size: 14.5px;
+            line-height: 1.7;
+            color: #cbd2d9;
+            margin-bottom: 10px;
+        }
+        .lang-options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .lang-choice-btn {
+            background: #12171e;
+            color: #e7e9ea;
+            border: 1px solid #2a323d;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .lang-choice-btn.active {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+            color: #ffffff;
+        }
+
         .success-alert { color: #00ba7c; font-size: 13px; margin-top: 8px; display: none; }
     </style>
 
@@ -872,6 +928,174 @@
         ];
 
         const ACCENT_COLORS = ['#1d9bf0', '#00ba7c', '#9b5de5', '#f59e0b'];
+
+        const UI_TEXTS = {
+            ar: {
+                pageTitle: '𝕏 المنصة الرئيسية',
+                posts: 'المنشورات',
+                articles: 'المقالات',
+                videos: 'الفيديوهات',
+                live: 'البث المباشر',
+                streamLogs: 'سجلات البث',
+                language: 'اللغة',
+                contact: 'اتصل بنا',
+                privacy: 'الخصوصية',
+                profile: 'الملف الشخصي',
+                postPlaceholder: 'ماذا يحدث؟ شارك أفكارك...',
+                publish: 'نشر',
+                searchPosts: 'ابحث في المنشورات أو الوسوم...',
+                langTitle: 'إعدادات اللغة والاتجاه',
+                langDesc: 'اختر لغة واجهة المنصة وسيتم تطبيق الاتجاه تلقائياً وحفظه.',
+                langSaved: 'تم تحديث لغة المنصة بنجاح',
+                contactTitle: 'اتصل بنا',
+                contactDesc: 'يسعدنا تواصلك معنا لأي استفسار أو دعم فني أو مقترح حول المنصة.',
+                contactNamePh: 'الاسم الكامل...',
+                contactEmailPh: 'البريد الإلكتروني...',
+                contactMsgPh: 'اكتب رسالتك هنا...',
+                contactSend: 'إرسال الرسالة',
+                contactSent: 'تم إرسال رسالتك بنجاح وسنرد عليك قريباً',
+                privacyTitle: 'سياسة الخصوصية وحماية البيانات',
+                privacyP1: 'نحترم خصوصيتك بالكامل؛ يتم تخزين بيانات حسابك، منشوراتك، مقالاتك، وسجلات البث محلياً على متصفحك عبر LocalStorage وIndexedDB.',
+                privacyP2: 'لا نقوم ببيع بياناتك الشخصية لأي أطراف خارجية، ويمكنك في أي وقت تصدير نسخة احتياطية أو حذف بياناتك نهائياً من الملف الشخصي.'
+            },
+            en: {
+                pageTitle: '𝕏 Main Platform',
+                posts: 'Posts',
+                articles: 'Articles',
+                videos: 'Videos',
+                live: 'Live',
+                streamLogs: 'Stream Logs',
+                language: 'Language',
+                contact: 'Contact Us',
+                privacy: 'Privacy',
+                profile: 'Profile',
+                postPlaceholder: "What's happening? Share your thoughts...",
+                publish: 'Post',
+                searchPosts: 'Search posts or hashtags...',
+                langTitle: 'Language & Direction Settings',
+                langDesc: 'Choose the interface language; layout direction updates and saves automatically.',
+                langSaved: 'Platform language updated successfully',
+                contactTitle: 'Contact Us',
+                contactDesc: 'Reach out to us for support, questions, or feedback about the platform.',
+                contactNamePh: 'Full name...',
+                contactEmailPh: 'Email address...',
+                contactMsgPh: 'Write your message here...',
+                contactSend: 'Send Message',
+                contactSent: 'Your message has been sent successfully',
+                privacyTitle: 'Privacy Policy & Data Protection',
+                privacyP1: 'We respect your privacy. Your profile details, posts, articles, and stream logs are stored locally in your browser using LocalStorage and IndexedDB.',
+                privacyP2: 'We never sell your personal data to third parties, and you can export a backup or delete your data anytime from your profile.'
+            }
+        };
+
+        function getSavedLanguage() {
+            return window.localStorage.getItem('x_app_lang') === 'en' ? 'en' : 'ar';
+        }
+
+        window.applyPlatformLanguage = function(langCode) {
+            const lang = langCode === 'en' ? 'en' : 'ar';
+            window.localStorage.setItem('x_app_lang', lang);
+            const t = UI_TEXTS[lang];
+
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
+            document.title = t.pageTitle;
+
+            const profileBtn = document.getElementById('headerProfileBtn');
+            if (profileBtn) profileBtn.innerText = t.profile;
+
+            const tabMap = {
+                posts: t.posts,
+                articles: t.articles,
+                videos: t.videos,
+                live: t.live,
+                streamLogs: t.streamLogs,
+                language: t.language,
+                contact: t.contact,
+                privacy: t.privacy
+            };
+            Object.entries(tabMap).forEach(([key, label]) => {
+                const el = document.getElementById('tab_' + key);
+                if (el) el.innerText = label;
+            });
+
+            const postTextarea = document.getElementById('postInputText');
+            if (postTextarea) postTextarea.placeholder = t.postPlaceholder;
+
+            const postBtn = document.getElementById('publishPostBtn');
+            if (postBtn) postBtn.innerText = t.publish;
+
+            const postSearch = document.getElementById('postsSearchInput');
+            if (postSearch) postSearch.placeholder = t.searchPosts;
+
+            const setText = (id, val) => {
+                const node = document.getElementById(id);
+                if (node) node.innerText = val;
+            };
+            const setPh = (id, val) => {
+                const node = document.getElementById(id);
+                if (node) node.placeholder = val;
+            };
+
+            setText('langSectionHeading', t.langTitle);
+            setText('langSectionDesc', t.langDesc);
+            setText('contactSectionHeading', t.contactTitle);
+            setText('contactSectionDesc', t.contactDesc);
+            setPh('contactNameInput', t.contactNamePh);
+            setPh('contactEmailInput', t.contactEmailPh);
+            setPh('contactMessageInput', t.contactMsgPh);
+            setText('contactSubmitBtn', t.contactSend);
+            setText('privacySectionHeading', t.privacyTitle);
+            setText('privacyPara1', t.privacyP1);
+            setText('privacyPara2', t.privacyP2);
+
+            document.querySelectorAll('.lang-choice-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            const activeSec = document.querySelector('.content-section.active');
+            if (activeSec) {
+                const secKey = activeSec.id.replace('Section', '');
+                const titleEl = document.getElementById('sectionTitle');
+                if (titleEl) {
+                    titleEl.innerText = secKey === 'profile' ? t.profile : (tabMap[secKey] || t.posts);
+                }
+            }
+
+            const msg = document.getElementById('languageSavedMsg');
+            if (msg) {
+                msg.innerText = t.langSaved;
+                msg.style.display = 'block';
+                setTimeout(() => { msg.style.display = 'none'; }, 2000);
+            }
+        };
+
+        window.submitContactForm = function() {
+            const nameEl = document.getElementById('contactNameInput');
+            const emailEl = document.getElementById('contactEmailInput');
+            const msgEl = document.getElementById('contactMessageInput');
+            const alertEl = document.getElementById('contactSuccessMsg');
+            const lang = getSavedLanguage();
+
+            const name = (nameEl?.value || '').trim();
+            const email = (emailEl?.value || '').trim();
+            const message = (msgEl?.value || '').trim();
+            if (!name || !email || !message) return;
+
+            const existing = JSON.parse(window.localStorage.getItem('x_contact_messages') || '[]');
+            existing.unshift({ name, email, message, createdAt: new Date().toISOString() });
+            window.localStorage.setItem('x_contact_messages', JSON.stringify(existing));
+
+            nameEl.value = '';
+            emailEl.value = '';
+            msgEl.value = '';
+
+            if (alertEl) {
+                alertEl.innerText = UI_TEXTS[lang].contactSent;
+                alertEl.style.display = 'block';
+                setTimeout(() => { alertEl.style.display = 'none'; }, 2500);
+            }
+        };
 
         function getActiveUserIdentity() {
             const currentUser = window.localStorage.getItem('active_session_user') || 'User';
@@ -1275,12 +1499,11 @@
             if (targetSec) targetSec.classList.add('active');
             
             const titleEl = document.getElementById('sectionTitle');
-            if (titleEl) titleEl.innerText = titleText;
-            
-            const tabs = document.querySelectorAll('.tab-item');
-            tabs.forEach(tab => {
-                if(tab.innerText.includes(titleText)) tab.classList.add('active');
-            });
+            const tabEl = document.getElementById('tab_' + sectionName);
+            if (titleEl) {
+                titleEl.innerText = (tabEl && tabEl.innerText.trim()) ? tabEl.innerText.trim() : titleText;
+            }
+            if (tabEl) tabEl.classList.add('active');
 
             if (sectionName === 'live') {
                 isLiveStarted = false;
@@ -2329,6 +2552,9 @@
             window.loadVideos();
             window.loadStreamLogs();
             checkReturnedVisaInvoice();
+            window.applyPlatformLanguage(getSavedLanguage());
+            const langMsg = document.getElementById('languageSavedMsg');
+            if (langMsg) langMsg.style.display = 'none';
         });
     </script>
 </head>
@@ -2337,14 +2563,19 @@
         <div class="top-nav">
             <div class="top-nav-header">
                 <h2 id="sectionTitle">المنشورات</h2>
-                <button class="profile-nav-btn" onclick="switchTab('profile', 'الملف الشخصي')">الملف الشخصي</button>
+                <div class="header-actions-group">
+                    <button id="headerProfileBtn" class="profile-nav-btn" onclick="switchTab('profile', 'الملف الشخصي')">الملف الشخصي</button>
+                </div>
             </div>
             <div class="nav-tabs">
-                <div class="tab-item active" onclick="switchTab('posts', 'المنشورات')">المنشورات</div>
-                <div class="tab-item" onclick="switchTab('articles', 'المقالات')">المقالات</div>
-                <div class="tab-item" onclick="switchTab('videos', 'الفيديوهات')">الفيديوهات</div>
-                <div class="tab-item" onclick="switchTab('live', 'البث المباشر')">البث المباشر</div>
-                <div class="tab-item" onclick="switchTab('streamLogs', 'سجلات البث')">سجلات البث</div>
+                <div id="tab_posts" class="tab-item active" onclick="switchTab('posts', 'المنشورات')">المنشورات</div>
+                <div id="tab_articles" class="tab-item" onclick="switchTab('articles', 'المقالات')">المقالات</div>
+                <div id="tab_videos" class="tab-item" onclick="switchTab('videos', 'الفيديوهات')">الفيديوهات</div>
+                <div id="tab_live" class="tab-item" onclick="switchTab('live', 'البث المباشر')">البث المباشر</div>
+                <div id="tab_streamLogs" class="tab-item" onclick="switchTab('streamLogs', 'سجلات البث')">سجلات البث</div>
+                <div id="tab_language" class="tab-item" onclick="switchTab('language', 'اللغة')">اللغة</div>
+                <div id="tab_contact" class="tab-item" onclick="switchTab('contact', 'اتصل بنا')">اتصل بنا</div>
+                <div id="tab_privacy" class="tab-item" onclick="switchTab('privacy', 'الخصوصية')">الخصوصية</div>
             </div>
         </div>
 
@@ -2354,7 +2585,7 @@
                 <div class="post-input-wrapper">
                     <textarea id="postInputText" placeholder="ماذا يحدث؟ شارك أفكارك..."></textarea>
                     <div class="post-actions">
-                        <button class="tweet-btn" onclick="addNewPost()">نشر</button>
+                        <button id="publishPostBtn" class="tweet-btn" onclick="addNewPost()">نشر</button>
                     </div>
                 </div>
             </div>
@@ -2454,6 +2685,44 @@
                 <button id="clearAllLogsBtn" type="button" class="action-chip-btn" style="display:none;" onclick="clearAllStreamLogs()">🗑 مسح الكل</button>
             </div>
             <div id="streamLogsFeed"></div>
+        </div>
+
+        <div id="languageSection" class="content-section">
+            <div class="info-panel-box">
+                <div class="info-card">
+                    <h3 id="langSectionHeading">إعدادات اللغة والاتجاه</h3>
+                    <p id="langSectionDesc">اختر لغة واجهة المنصة وسيتم تطبيق الاتجاه تلقائياً وحفظه.</p>
+                    <div class="lang-options-grid">
+                        <button type="button" class="lang-choice-btn active" data-lang="ar" onclick="applyPlatformLanguage('ar')">🇸🇦 العربية (RTL)</button>
+                        <button type="button" class="lang-choice-btn" data-lang="en" onclick="applyPlatformLanguage('en')">🇺🇸 English (LTR)</button>
+                    </div>
+                    <div id="languageSavedMsg" class="success-alert">تم تحديث لغة المنصة بنجاح</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="contactSection" class="content-section">
+            <div class="info-panel-box">
+                <div class="info-card">
+                    <h3 id="contactSectionHeading">اتصل بنا</h3>
+                    <p id="contactSectionDesc">يسعدنا تواصلك معنا لأي استفسار أو دعم فني أو مقترح حول المنصة.</p>
+                    <input id="contactNameInput" class="custom-input" type="text" placeholder="الاسم الكامل...">
+                    <input id="contactEmailInput" class="custom-input" type="email" placeholder="البريد الإلكتروني...">
+                    <textarea id="contactMessageInput" class="custom-input" placeholder="اكتب رسالتك هنا..."></textarea>
+                    <button id="contactSubmitBtn" type="button" class="tweet-btn" onclick="submitContactForm()">إرسال الرسالة</button>
+                    <div id="contactSuccessMsg" class="success-alert">تم إرسال رسالتك بنجاح وسنرد عليك قريباً</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="privacySection" class="content-section">
+            <div class="info-panel-box">
+                <div class="info-card">
+                    <h3 id="privacySectionHeading">سياسة الخصوصية وحماية البيانات</h3>
+                    <p id="privacyPara1">نحترم خصوصيتك بالكامل؛ يتم تخزين بيانات حسابك، منشوراتك، مقالاتك، وسجلات البث محلياً على متصفحك عبر LocalStorage وIndexedDB.</p>
+                    <p id="privacyPara2">لا نقوم ببيع بياناتك الشخصية لأي أطراف خارجية، ويمكنك في أي وقت تصدير نسخة احتياطية أو حذف بياناتك نهائياً من الملف الشخصي.</p>
+                </div>
+            </div>
         </div>
 
         <div id="profileSection" class="content-section">
